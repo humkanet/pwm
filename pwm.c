@@ -101,7 +101,7 @@ void pwm_set_mode(uint8_t mode)
 void pwm_set_polarity(uint8_t val)
 {
 	COG1CON1bits.POLA = val & 0x01;
-	COG1CON1bits.POLB = val & 0x02;
+	COG1CON1bits.POLB = (val>>1) & 0x01;
 }
 
 

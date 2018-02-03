@@ -35,6 +35,7 @@ inline void enc1_time(int8_t inc)
 	// Рассчитываем pr/dc
 	opt.pr = us2pr(opt.ton+opt.toff);
 	opt.dc = us2pr(opt.ton);
+	pwm_set(opt.pr, opt.dc);
 	// Обновляем экран
 	update_ton();
 	update_toff();
