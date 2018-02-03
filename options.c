@@ -81,26 +81,31 @@ const char* PWM_MODE_NAMES[PWM_nMODES] = {
 /* Время (мкс) -> значение регистра */
 uint16_t us2pr(uint16_t us)
 {
-	return TICKS_1US*us;
+	uint16_t pr = TICKS_1US*us;
+	return pr ? pr-1 : 0;
 }
 
 
 /* Значение регистра -> Время (мкс) */
 uint16_t pr2us(uint16_t pr)
 {
-	return pr/TICKS_1US;
+	return (pr+1)/TICKS_1US;
 }
 
 
 /* Частота (Гц) -> значение регистра */
 uint16_t freq2pr(uint32_t freq)
 {
-	return freq ? _XTAL_FREQ/freq : 0;
+	// Не указана частота
+	if (!freq) return 0;
+	// Расчитываем pr	
+	uint16_t pr = _XTAL_FREQ/freq;
+	return pr ? pr-1 : 0;
 }
 
 
 /* Значение регистра -> частота (Гц) */
 uint32_t pr2freq(uint16_t pr)
 {
-	return pr ? _XTAL_FREQ/pr : 0;
+	return pr ? _XTAL_FREQ/(pr+1) : 0;
 }

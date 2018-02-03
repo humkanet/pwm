@@ -13,6 +13,11 @@ void btn5_event(uint8_t event)
 	if (opt.ctrl_mode>=CTRL_nMODES){
 		opt.ctrl_mode = 0;
 	}
+	// Пересчитываем Ton/Toff
+	if (opt.pwm_mode==CTRL_MODE_TIME){
+		opt.ton  = pr2us(opt.dc);
+		opt.toff = pr2us(opt.pr-opt.dc);
+	}
 	// Обновляем экран
 	update_ctrl_mode();
 }
