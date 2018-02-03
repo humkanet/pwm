@@ -7,15 +7,15 @@
 
 void btn2_event(uint8_t event)
 {
-	// Ïðîâåðÿåì ñîñòîÿíèå êíîïêè
+	// ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ðµ ÐºÐ½Ð¾Ð¿ÐºÐ¸
 	if (event!=BUTTON_EVENT_UP) return;
-	// Ðåæèì ðàáîòû: ÷àñòîòà/ñêâàæíîñòü
+	// Ð ÐµÐ¶Ð¸Ð¼ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹: Ñ‡Ð°ÑÑ‚Ð¾Ñ‚Ð°/ÑÐºÐ²Ð°Ð¶Ð½Ð¾ÑÑ‚ÑŒ
 	if (opt.ctrl_mode==CTRL_MODE_FREQ){
 		opt.duty_step ++;
 		if (opt.duty_step>=DUTY_nSTEPS) opt.duty_step = 0;
 		update_duty_step();
 	}
-	// Ðåæèì ðàáîòû: Ton/Toff
+	// Ð ÐµÐ¶Ð¸Ð¼ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹: Ton/Toff
 	else if (opt.ctrl_mode==CTRL_MODE_TIME){
 		opt.ton_step ++;
 		if (opt.ton_step>=T_nSTEPS) opt.ton_step = 0;

@@ -10,32 +10,32 @@
 inline void enc2_time(int8_t inc)
 {
 	uint16_t step = T_STEP[opt.ton_step];
-	// Увеличение Ton
+	// РЈРІРµР»РёС‡РµРЅРёРµ Ton
 	if (inc>0){
-		// Больше максимального времени
+		// Р‘РѕР»СЊС€Рµ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РІСЂРµРјРµРЅРё
 		if (opt.ton>=T_ON_MAX) return;
-		// Расчитываем новое время
+		// Р Р°СЃС‡РёС‚С‹РІР°РµРј РЅРѕРІРѕРµ РІСЂРµРјСЏ
 		step *= inc;
 		uint16_t left = T_ON_MAX-opt.ton;
 		if (step>left) step = left;
 		opt.ton += step;
 	}
-	// Уменьшение Ton
+	// РЈРјРµРЅСЊС€РµРЅРёРµ Ton
 	else{
-		// Меньше минимального времени
+		// РњРµРЅСЊС€Рµ РјРёРЅРёРјР°Р»СЊРЅРѕРіРѕ РІСЂРµРјРµРЅРё
 		if (opt.ton<=T_MIN) return;
-		// Расчитываем новое значение
+		// Р Р°СЃС‡РёС‚С‹РІР°РµРј РЅРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ
 		step *= -inc;
 		uint16_t left = opt.ton-T_MIN;
 		if (step>left) step = left;
 		opt.ton -= step;
 	}
-	// Корректируем Toff
+	// РљРѕСЂСЂРµРєС‚РёСЂСѓРµРј Toff
 	if ((opt.toff+opt.ton)>T_MAX) opt.toff = T_MAX-opt.ton;
-	// Рассчитываем pr/dc
+	// Р Р°СЃСЃС‡РёС‚С‹РІР°РµРј pr/dc
 	opt.pr = us2pr(opt.ton+opt.toff);
 	opt.dc = us2pr(opt.ton);
-	// Обновляем экран
+	// РћР±РЅРѕРІР»СЏРµРј СЌРєСЂР°РЅ
 	update_ton();
 	update_toff();
 }
@@ -43,32 +43,32 @@ inline void enc2_time(int8_t inc)
 
 inline void enc2_freq(int8_t inc)
 {
-	// Расчитываем новое значение скважности
+	// Р Р°СЃС‡РёС‚С‹РІР°РµРј РЅРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ СЃРєРІР°Р¶РЅРѕСЃС‚Рё
 	uint8_t  duty = (U32(100)*(opt.dc+1))/opt.pr;
 	uint16_t step = DUTY_STEP[opt.duty_step];
 	uint16_t dc;
 	if (!duty) duty ++;
-	// Увеличение частоты
+	// РЈРІРµР»РёС‡РµРЅРёРµ С‡Р°СЃС‚РѕС‚С‹
 	if (inc>0){
-		// Превышена макс. частота
+		// РџСЂРµРІС‹С€РµРЅР° РјР°РєСЃ. С‡Р°СЃС‚РѕС‚Р°
 		if (duty>=DUTY_MAX) return;
-		// Изменяем частоту
+		// РР·РјРµРЅСЏРµРј С‡Р°СЃС‚РѕС‚Сѓ
 		step *= inc;
 		uint16_t left = DUTY_MAX-duty;
 		if (step>left) step = left;
 		duty += step;
 	}
-	// Уменьшение частоты
+	// РЈРјРµРЅСЊС€РµРЅРёРµ С‡Р°СЃС‚РѕС‚С‹
 	else{
-		// Меньше мин. частоты
+		// РњРµРЅСЊС€Рµ РјРёРЅ. С‡Р°СЃС‚РѕС‚С‹
 		if (duty<DUTY_MIN) return;
-		// Изменяем частоту
+		// РР·РјРµРЅСЏРµРј С‡Р°СЃС‚РѕС‚Сѓ
 		step *= -inc;
 		uint16_t left = duty-DUTY_MIN;
 		if (step>left) step = left;
 		duty -= step;
 	}
-	// Расчитываем dc
+	// Р Р°СЃС‡РёС‚С‹РІР°РµРј dc
 	uint16_t dc = (U32(duty)*opt.pr)/100;
 	if (dc==opt.dc){
 		if (inc>0) dc ++;
@@ -77,9 +77,9 @@ inline void enc2_freq(int8_t inc)
 	opt.dc = dc;
 	if (opt.dc==opt.pr) opt.dc --;
 	if (!opt.dc) opt.dc ++;
-	// Устанавливаем параметры ШИМ
+	// РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РїР°СЂР°РјРµС‚СЂС‹ РЁРРњ
 	pwm_set(opt.pr, opt.dc);
-	// Обновляем экран
+	// РћР±РЅРѕРІР»СЏРµРј СЌРєСЂР°РЅ
 	update_freq();
 	update_duty();
 }
@@ -87,7 +87,7 @@ inline void enc2_freq(int8_t inc)
 
 inline void enc2_dt(int8_t inc)
 {
-	// Увеличение значения
+	// РЈРІРµР»РёС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ
 	if (inc>0){
 		if (opt.dtf<DT_MAX){
 			uint8_t left = DT_MAX-opt.dtf;
@@ -95,7 +95,7 @@ inline void enc2_dt(int8_t inc)
 		}
 		else return;
 	}
-	// Уменьшение значения
+	// РЈРјРµРЅСЊС€РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ
 	else{
 		if (opt.dtf>DT_MIN){
 			uint8_t left = opt.dtf-DT_MIN;
@@ -103,25 +103,25 @@ inline void enc2_dt(int8_t inc)
 		}
 		else return;
 	}
-	// Устанавливаем значение
+	// РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј Р·РЅР°С‡РµРЅРёРµ
 	opt.dtf += inc;
 	pwm_set_dt(opt.dtr, opt.dtf);
-	// Обновляем экран
+	// РћР±РЅРѕРІР»СЏРµРј СЌРєСЂР°РЅ
 	update_dtf();
 }
 
 
 void enc2_event(int8_t inc)
 {
-	// Режим работы: частота/скважность
+	// Р РµР¶РёРј СЂР°Р±РѕС‚С‹: С‡Р°СЃС‚РѕС‚Р°/СЃРєРІР°Р¶РЅРѕСЃС‚СЊ
 	if (opt.ctrl_mode==CTRL_MODE_FREQ){
 		enc2_freq(inc);
 	}
-	// Режим работы: Ton/Toff
+	// Р РµР¶РёРј СЂР°Р±РѕС‚С‹: Ton/Toff
 	else if (opt.ctrl_mode==CTRL_MODE_TIME){
 		enc2_time(inc);
 	}
-	// Режим работы: Deadtime
+	// Р РµР¶РёРј СЂР°Р±РѕС‚С‹: Deadtime
 	else if (opt.ctrl_mode==CTRL_MODE_DT){
 		enc2_dt(inc);
 	}

@@ -14,9 +14,9 @@
 
 void i2c_init()
 {
-	// Отключаем MSSP
+	// РћС‚РєР»СЋС‡Р°РµРј MSSP
 	SSPEN      = 0;
-	// Настраиваем пины
+	// РќР°СЃС‚СЂР°РёРІР°РµРј РїРёРЅС‹
 	ANS(SDA_PORT, SDA_PIN)  = 0;
 	ANS(SCL_PORT, SCL_PIN)  = 0;
 	TRIS(SDA_PORT, SDA_PIN) = 1;
@@ -27,7 +27,7 @@ void i2c_init()
 	PPS(SCL_PORT, SCL_PIN)  = 0x12;
 	SSPCLKPPS = 0x01;
 	SSPDATPPS = 0x00;
-	// Настраиваем MSSP
+	// РќР°СЃС‚СЂР°РёРІР°РµРј MSSP
 	SSPADD     = _XTAL_FREQ/(4*I2C_SPEED)-1;
 	SSPSTAT    = 0x80;
 	SSPCON2    = 0x00;
@@ -38,9 +38,9 @@ void i2c_init()
 
 void i2c_off()
 {
-	// Отключаем MSSP
+	// РћС‚РєР»СЋС‡Р°РµРј MSSP
 	SSPCON1  = 0x00;
-	// Настраиваем пины
+	// РќР°СЃС‚СЂР°РёРІР°РµРј РїРёРЅС‹
 	TRIS(SDA_PORT, SDA_PIN) = 1;
 	TRIS(SDA_PORT, SDA_PIN) = 1;
 	ANS(SDA_PORT, SDA_PIN)  = 1;

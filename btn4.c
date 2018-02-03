@@ -7,12 +7,12 @@
 
 void btn4_event(uint8_t event)
 {
-	// Проверяем состояние кнопки
+	// РџСЂРѕРІРµСЂСЏРµРј СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё
 	if (event!=BUTTON_EVENT_UP) return;
-	// Изменяем режим работы
+	// РР·РјРµРЅСЏРµРј СЂРµР¶РёРј СЂР°Р±РѕС‚С‹
 	opt.pwm_mode ++;
 	if (opt.pwm_mode>=PWM_nMODES) opt.pwm_mode = 0;
 	pwm_set_mode(PWM_MODE[opt.pwm_mode]);
-	// Обновляем экран
+	// РћР±РЅРѕРІР»СЏРµРј СЌРєСЂР°РЅ
 	update_pwm_mode();
 }

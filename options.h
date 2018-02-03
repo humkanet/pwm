@@ -6,12 +6,12 @@
 #define TICKS_1US        (_XTAL_FREQ/1000000)
 
 
-/* ПОЛЯРНОСТЬ СИГНАЛОВ */
+/* РџРћР›РЇР РќРћРЎРўР¬ РЎРР“РќРђР›РћР’ */
 #define POLARITY_nMODES  4
 extern const char*       POLARITY_NAMES[POLARITY_nMODES];
 
 
-/* РЕЖИМЫ РЕГУЛИРОВКИ */
+/* Р Р•Р–РРњР« Р Р•Р“РЈР›РР РћР’РљР */
 #define CTRL_nMODES      3
 #define CTRL_MODE_TIME   0x00
 #define CTRL_MODE_FREQ   0x01
@@ -20,63 +20,63 @@ extern const char*       CTRL_MODES_LINE1[CTRL_nMODES];
 extern const char*       CTRL_MODES_LINE2[CTRL_nMODES];
 
 
-/* ОГРАНИЧЕНИЯ Ton+Toff */
+/* РћР“Р РђРќРР§Р•РќРРЇ Ton+Toff */
 #define T_MAX            ((65536/TICKS_1US)-1)
 #define T_MIN            1
 #define T_ON_MAX         (T_MAX-1)
 #define T_OFF_MAX        (T_MAX-1)
 
 
-/* ОГРАНИЧЕНИЯ Freq+Duty */
+/* РћР“Р РђРќРР§Р•РќРРЇ Freq+Duty */
 #define FREQ_MIN         ((_XTAL_FREQ/65536)+1)
 #define FREQ_MAX         (_XTAL_FREQ/25)
 #define DUTY_MIN         1
 #define DUTY_MAX         99
 
 
-/* ШАГ ИЗМЕНЕНИЯ ЧАСТОТЫ */
+/* РЁРђР“ РР—РњР•РќР•РќРРЇ Р§РђРЎРўРћРўР« */
 #define FREQ_nSTEPS      6
 extern const uint16_t    FREQ_STEP[FREQ_nSTEPS];
 extern const char*       FREQ_STEP_NAMES[FREQ_nSTEPS];
 
 
-/* ШАГ ИЗМЕНЕНИЯ ВРЕМЕНИ */
+/* РЁРђР“ РР—РњР•РќР•РќРРЇ Р’Р Р•РњР•РќР */
 #define T_nSTEPS         3
 extern const uint8_t     T_STEP[T_nSTEPS];
 extern const char*       T_STEP_NAMES[T_nSTEPS];
 
 
-/* ШАГ ИЗМЕНЕНИЯ СКВАЖНОСТИ */
+/* РЁРђР“ РР—РњР•РќР•РќРРЇ РЎРљР’РђР–РќРћРЎРўР */
 #define DUTY_nSTEPS      3
 extern const uint8_t     DUTY_STEP[DUTY_nSTEPS];
 extern const char*       DUTY_STEP_NAMES[DUTY_nSTEPS];
 
 
-/* РЕЖИМЫ ГЕНЕРАЦИИ СИГНАЛОВ */
+/* Р Р•Р–РРњР« Р“Р•РќР•Р РђР¦РР РЎРР“РќРђР›РћР’ */
 #define PWM_nMODES       3
 extern const uint8_t     PWM_MODE[PWM_nMODES];
 extern const char*       PWM_MODE_NAMES[PWM_nMODES];
 
 
-/* ОГРАНИЧЕНИЯ DEADTIME */
+/* РћР“Р РђРќРР§Р•РќРРЇ DEADTIME */
 #define DT_MIN           0
 #define DT_MAX           63
 
 
 typedef struct {
-	uint8_t   ctrl_mode;    // Режим регулировки интервалов (Freq+Duty, Ton+Toff, DT)
-	uint8_t   pwm_mode;     // Режим работы ШИМ
-	uint8_t   polarity;     // Полярность сигналов
-	uint16_t  pr;           // Регистр PR
-	uint16_t  dc;           // Регистр DC
-	uint16_t  ton;          // Ton (мкс)
-	uint16_t  toff;         // Toff (мкс)
+	uint8_t   ctrl_mode;    // Р РµР¶РёРј СЂРµРіСѓР»РёСЂРѕРІРєРё РёРЅС‚РµСЂРІР°Р»РѕРІ (Freq+Duty, Ton+Toff, DT)
+	uint8_t   pwm_mode;     // Р РµР¶РёРј СЂР°Р±РѕС‚С‹ РЁРРњ
+	uint8_t   polarity;     // РџРѕР»СЏСЂРЅРѕСЃС‚СЊ СЃРёРіРЅР°Р»РѕРІ
+	uint16_t  pr;           // Р РµРіРёСЃС‚СЂ PR
+	uint16_t  dc;           // Р РµРіРёСЃС‚СЂ DC
+	uint16_t  ton;          // Ton (РјРєСЃ)
+	uint16_t  toff;         // Toff (РјРєСЃ)
 	uint8_t   dtr;          // DEADTIME (rise)
 	uint8_t   dtf;          // DEADTIME (fall)
-	uint8_t   freq_step;    // Шаг изменения частоты
-	uint8_t   duty_step;    // Шаг изменения частоты
-	uint8_t   ton_step;     // Шаг изменения Ton
-	uint8_t   toff_step;    // Шаг изменения Toff
+	uint8_t   freq_step;    // РЁР°Рі РёР·РјРµРЅРµРЅРёСЏ С‡Р°СЃС‚РѕС‚С‹
+	uint8_t   duty_step;    // РЁР°Рі РёР·РјРµРЅРµРЅРёСЏ С‡Р°СЃС‚РѕС‚С‹
+	uint8_t   ton_step;     // РЁР°Рі РёР·РјРµРЅРµРЅРёСЏ Ton
+	uint8_t   toff_step;    // РЁР°Рі РёР·РјРµРЅРµРЅРёСЏ Toff
 } OPTIONS;
 extern OPTIONS opt;
 

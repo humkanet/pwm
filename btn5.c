@@ -6,13 +6,13 @@
 
 void btn5_event(uint8_t event)
 {
-	// Проверяем состояние кнопки
+	// РџСЂРѕРІРµСЂСЏРµРј СЃРѕСЃС‚РѕСЏРЅРёРµ РєРЅРѕРїРєРё
 	if (event!=BUTTON_EVENT_UP) return;
-	// Изменяем режим работы
+	// РР·РјРµРЅСЏРµРј СЂРµР¶РёРј СЂР°Р±РѕС‚С‹
 	opt.ctrl_mode ++;
 	if (opt.ctrl_mode>=CTRL_nMODES){
 		opt.ctrl_mode = 0;
 	}
-	// Обновляем экран
+	// РћР±РЅРѕРІР»СЏРµРј СЌРєСЂР°РЅ
 	update_ctrl_mode();
 }
