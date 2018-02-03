@@ -2,10 +2,10 @@
 #include "pre.h"
 #include "pwm.h"
 
-#define PWM_PORTA   C
-#define PWM_PINA    5
-#define PWM_PORTB   C
-#define PWM_PINB    4
+#define GATEA_PORT  C
+#define GATEA_PIN   5
+#define GATEB_PORT  C
+#define GATEB_PIN   4
 
 #define U16(x)      ((uint16_t) (x))
 
@@ -19,14 +19,14 @@ struct {
 } pwm;
 
 
-inline void pwm_init()
+void pwm_init()
 {
 	pwm.active = 0;
 	// Настраиваем пины
-	LAT(PWM_PORTA, PWM_PINA)  = 0;
-	LAT(PWM_PORTB, PWM_PINB)  = 0;
-	TRIS(PWM_PORTA, PWM_PINA) = 0;
-	TRIS(PWM_PORTB, PWM_PINB) = 0;
+	LAT(GATEA_PORT, GATEA_PIN)  = 0;
+	LAT(GATEB_PORT, GATEB_PIN)  = 0;
+	TRIS(GATEA_PORT, GATEA_PIN) = 0;
+	TRIS(GATEB_PORT, GATEB_PIN) = 0;
 	// Разрешаем 100ма на пинах
 	HIDC4      = 1;
 	HIDC5      = 1;
@@ -37,11 +37,11 @@ inline void pwm_init()
 	PWM5INTF   = 0x00;
 	PWM5LDCON  = 0x00;
 	// Подключаем пины к COG
-	PPS(PWM_PORTA, PWM_PINA) = 0x04;
-	PPS(PWM_PORTB, PWM_PINB) = 0x05;
+	PPS(GATEA_PORT, GATEA_PIN) = 0x04;
+	PPS(GATEB_PORT, GATEB_PIN) = 0x05;
 	// Настраиваем COG
 	COG1CON0   = 0x00;
-	COG1CON1   = 0x00;
+	COG1CON1   = 0xC0;
 	COG1DBF    = 0x00;
 	COG1DBR    = 0x00;
 	COG1BLKF   = 0x00;
@@ -94,6 +94,24 @@ void pwm_set(uint16_t pr, uint16_t dc)
 void pwm_set_mode(uint8_t mode)
 {
 	COG1CON0bits.MD = mode;
+}
+
+
+/* Установка полярности сигналов */
+void pwm_set_polarity(uint8_t val)
+{
+	COG1CON1bits.POLA = val & 0x01;
+	COG1CON1bits.POLB = val & 0x02;
+}
+
+
+/* Установка DEADTIME */
+void pwm_set_dt(uint8_t rise, uint8_t fall)
+{
+	COG1DBR = rise;
+	COG1DBF = fall;
+	G1LD    = 1;
+	while (pwm.active && G1LD);
 }
 
 

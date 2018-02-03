@@ -2,12 +2,15 @@
 #include "i2c.h"
 #include "pre.h"
 
+
 #define SDA_PORT  A
 #define SDA_PIN   0
 #define SCL_PORT  A
 #define SCL_PIN   1
 
+
 #define i2c_wait(mask)  while((SSPCON2 & 0x1F) | (SSPSTAT & mask))
+
 
 void i2c_init()
 {
@@ -17,7 +20,9 @@ void i2c_init()
 	ANS(SDA_PORT, SDA_PIN)  = 0;
 	ANS(SCL_PORT, SCL_PIN)  = 0;
 	TRIS(SDA_PORT, SDA_PIN) = 1;
-	TRIS(SDA_PORT, SDA_PIN) = 1;
+	TRIS(SCL_PORT, SCL_PIN) = 1;
+	WPU(SDA_PORT, SDA_PIN)  = 1;
+	WPU(SCL_PORT, SCL_PIN)  = 1;
 	PPS(SDA_PORT, SDA_PIN)  = 0x13;
 	PPS(SCL_PORT, SCL_PIN)  = 0x12;
 	SSPCLKPPS = 0x01;
@@ -40,6 +45,8 @@ void i2c_off()
 	TRIS(SDA_PORT, SDA_PIN) = 1;
 	ANS(SDA_PORT, SDA_PIN)  = 1;
 	ANS(SCL_PORT, SCL_PIN)  = 1;
+	WPU(SDA_PORT, SDA_PIN)  = 0;
+	WPU(SCL_PORT, SCL_PIN)  = 0;	
 }
 
 
