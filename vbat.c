@@ -34,10 +34,13 @@ uint16_t vbat_read()
 		while(GO_nDONE);
 		val += ADRESH;
 	}
-	// Переводим в значение с 2 знаками после запятой:
-	// V = Vref*(adc/4)/256 = Vref*adc/1024, Vref=2048mV
-	// V = 2048*adc/1024 = adc*2 = adc<<1
-	val = (val<<1)/10;
+	/*
+		Переводим в значение с 2 знаками после запятой:
+		V/4 = Vref*(adc/4)/256 = 2048*adc/1024 = adc*2
+		V   = adc*8
+		V   = adc<<3;
+	*/
+	val = (val<<3)/10;
 	// Восстанавливаем настройки АЦП
 	ADCON0 = con0;
 	ADCON1 = con1;
