@@ -8,6 +8,7 @@
 #include "lcd.h"
 #include "str.h"
 #include "options.h"
+#include "vbat.h"
 
 
 #define U16(x)     ((uint16_t) (x))
@@ -166,6 +167,7 @@ inline void setup()
 	ui_init();
 	pwm_init();
 	i2c_init();
+	vbat_init();
 	pcf8574_init();
 	lcd_init(LCD_DISP_ON);
 	lcd_led(1);
@@ -188,6 +190,20 @@ inline void setup()
 }
 
 
+void vbat()
+{
+	static char buf[17] = " Battery: x.xxV ";
+	// Измеряем напряжение аккумулятора
+	uint16_t vbat = vbat_read();
+	itoa_pad(buf+10, vbat, 3, 0);
+	buf[13] = buf[12];
+	buf[12] = buf[11];
+	buf[11] = '.';
+	lcd_goto(0, 0);
+	lcd_puts(buf);
+}
+
+
 void main(void)
 {
 	// Запрещаем прерывания
@@ -196,6 +212,10 @@ void main(void)
 	setup();
 	// Разрешаем прерывания
 	ei();
+
+	// Отображаем напряжение аккумулятора
+	vbat();
+	__delay_ms(2000);
 
 	// Настраиваем и запускаем ШИМ
 	pwm_set(opt.pr, opt.dc);
