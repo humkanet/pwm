@@ -42,8 +42,8 @@ void pwm_init()
 	PPS(GATEA_PORT, GATEA_PIN) = 0x04;
 	PPS(GATEB_PORT, GATEB_PIN) = 0x05;
 	// Настраиваем COG
-	COG1CON0   = 0x00;
-	COG1CON1   = 0xC0;
+	COG1CON0   = 0b00001000;
+	COG1CON1   = 0b00000000;
 	COG1DBF    = 0x00;
 	COG1DBR    = 0x00;
 	COG1BLKF   = 0x00;
@@ -61,7 +61,7 @@ void pwm_init()
 	COG1FSIM0  = 0x00;
 	COG1FSIM1  = 0x00;
 	COG1STR    = 0x03;
-	COG1CON0   = 0b10001000;
+	G1EN       = 1;
 }
 
 

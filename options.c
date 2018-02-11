@@ -13,7 +13,7 @@ const char* CTRL_MODES_LINE1[CTRL_nMODES] = {
 const char* CTRL_MODES_LINE2[CTRL_nMODES] = {
 	"       /      us",
 	"        Hz @   %",
-	"        /     ns",
+	"       /      ns",
 };
 
 

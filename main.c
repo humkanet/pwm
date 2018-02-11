@@ -65,16 +65,20 @@ void update_ctrl_mode()
 */
 void update_dtr()
 {
-	char str[4];
-	itoa_pad(str, U16(5)*opt.dtr, 3, ITOA_TERMINATE);
-	lcd_goto(4, 1);
+	char      str[5];
+	uint16_t  ns = U16(DT_STEP_NS)*opt.dtr;
+	ns >>= DT_STEP_SHIFT;
+	itoa_pad(str, ns, 4, ITOA_TERMINATE);
+	lcd_goto(2, 1);
 	lcd_puts(str);
 }
 void update_dtf()
 {
-	char str[4];
-	itoa_pad(str, U16(5)*opt.dtf, 3, ITOA_TERMINATE);
-	lcd_goto(10, 1);
+	char      str[5];
+	uint16_t  ns = U16(DT_STEP_NS)*opt.dtf;
+	ns >>= DT_STEP_SHIFT;
+	itoa_pad(str, ns, 4, ITOA_TERMINATE);
+	lcd_goto(9, 1);
 	lcd_puts(str);
 }
 
