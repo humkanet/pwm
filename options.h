@@ -27,9 +27,7 @@ extern const char*       CTRL_MODES_LINE2[CTRL_nMODES];
 #define T_OFF_MAX        (T_MAX-1)
 
 
-/* ОГРАНИЧЕНИЯ Freq+Duty */
-#define FREQ_MIN         ((_XTAL_FREQ/65536)+1)
-#define FREQ_MAX         (_XTAL_FREQ/25)
+/* ОГРАНИЧЕНИЯ Duty */
 #define DUTY_MIN         1
 #define DUTY_MAX         99
 
@@ -67,6 +65,7 @@ typedef struct {
 	uint8_t   ctrl_mode;    // Режим регулировки интервалов (Freq+Duty, Ton+Toff, DT)
 	uint8_t   pwm_mode;     // Режим работы ШИМ
 	uint8_t   polarity;     // Полярность сигналов
+	uint8_t   duty;         // Скважность (%)
 	uint16_t  pr;           // Регистр PR
 	uint16_t  dc;           // Регистр DC
 	uint16_t  ton;          // Ton (мкс)
@@ -85,5 +84,6 @@ uint16_t  us2pr(uint16_t us);
 uint16_t  pr2us(uint16_t pr);
 uint16_t  freq2pr(uint32_t freq);
 uint32_t  pr2freq(uint16_t pr);
+void      set_pwm(uint16_t pr, uint16_t dc);
 
 #endif

@@ -14,6 +14,7 @@
 #define IOCF_(port, pin)   IOC ## port ## F ## pin
 #define IOCP_(port, pin)   IOC ## port ## P ## pin
 #define IOCN_(port, pin)   IOC ## port ## N ## pin
+#define SLR_(port, pin)    SLR ## port ## pin
 #define PPSIN_(port, pin)  (((PPS ## port)<<3) | pin)
 
 
@@ -26,6 +27,7 @@
 #define IOCF(port, pin)    IOCF_(port, pin)
 #define IOCP(port, pin)    IOCP_(port, pin)
 #define IOCN(port, pin)    IOCN_(port, pin)
+#define SLR(port, pin)     SLR_(port, pin)
 #define PPSIN(port, pin)   PPSIN_(port, pin)
 
 

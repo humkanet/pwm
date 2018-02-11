@@ -27,6 +27,8 @@ void pwm_init()
 	LAT(GATEB_PORT, GATEB_PIN)  = 0;
 	TRIS(GATEA_PORT, GATEA_PIN) = 0;
 	TRIS(GATEB_PORT, GATEB_PIN) = 0;
+	SLR(GATEA_PORT, GATEA_PIN)  = 0;
+	SLR(GATEB_PORT, GATEB_PIN)  = 0;
 	// Разрешаем 100ма на пинах
 	HIDC4      = 1;
 	HIDC5      = 1;

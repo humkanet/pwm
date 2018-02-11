@@ -33,9 +33,10 @@ inline void enc1_time(int8_t inc)
 	// Корректируем Ton
 	if ((opt.toff+opt.ton)>T_MAX) opt.ton = T_MAX-opt.toff;
 	// Рассчитываем pr/dc
-	opt.pr = us2pr(opt.ton+opt.toff);
-	opt.dc = us2pr(opt.ton);
-	pwm_set(opt.pr, opt.dc);
+	set_pwm(
+		us2pr(opt.ton+opt.toff),
+		us2pr(opt.ton)
+	);
 	// Обновляем экран
 	update_ton();
 	update_toff();
@@ -75,11 +76,9 @@ inline void enc1_freq(int8_t inc)
 		if (pr==opt.pr) pr ++;
 	}
 	// Расчитываем скважность
-	opt.dc = (U32(opt.dc)*pr)/opt.pr;
-	opt.pr = pr;
-	if (!opt.dc) opt.dc ++;
+	uint16_t dc = U32(opt.duty)*pr/100;
 	// Устанавливаем параметры ШИМ
-	pwm_set(opt.pr, opt.dc);
+	set_pwm(pr, dc);
 	// Обновляем экран
 	update_freq();
 	update_duty();

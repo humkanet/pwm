@@ -1,4 +1,5 @@
 #include "options.h"
+#include "pwm.h"
 
 
 OPTIONS opt;
@@ -96,16 +97,30 @@ uint16_t pr2us(uint16_t pr)
 /* Частота (Гц) -> значение регистра */
 uint16_t freq2pr(uint32_t freq)
 {
-	// Не указана частота
-	if (!freq) return 0;
-	// Расчитываем pr	
-	uint16_t pr = _XTAL_FREQ/freq;
-	return pr ? pr-1 : 0;
+	return FREQ2PR(freq);
 }
 
 
 /* Значение регистра -> частота (Гц) */
 uint32_t pr2freq(uint16_t pr)
 {
-	return pr ? _XTAL_FREQ/(pr+1) : 0;
+	return PR2FREQ(pr);
+}
+
+
+/* Установка параметров ШИМ */
+void set_pwm(uint16_t pr, uint16_t dc)
+{
+	// Проверяем PR
+	if (pr<PR_MIN) pr = PR_MIN;
+	else if (pr>PR_MAX) pr = PR_MAX;
+	// Проверяем DC
+	uint16_t dc_max = pr-DC_MIN;
+	if (dc<DC_MIN) dc = DC_MIN;
+	else if (dc>dc_max) dc = dc_max;
+	// Настраиваем ШИМ
+	pwm_set(pr, dc);
+	// Сохраняем параметры
+	opt.pr = pr;
+	opt.dc = dc;
 }

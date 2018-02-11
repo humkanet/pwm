@@ -151,3 +151,15 @@ void lcd_led(uint8_t on)
 	else lcd.port &= ~bv(LCD_LED_PIN);
 	pcf8574_set(lcd.port);
 }
+
+
+void lcd_clear(char val)
+{
+	for (uint8_t line=0; line<LCD_LINES; line++){
+		lcd_goto(0, line);
+		for (uint8_t n=0; n<LCD_DISP_LENGTH; n++){
+			lcd_wait();
+			lcd_write(val, 1);
+		}
+	}
+}

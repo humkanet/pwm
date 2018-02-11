@@ -33,9 +33,10 @@ inline void enc2_time(int8_t inc)
 	// Корректируем Toff
 	if ((opt.toff+opt.ton)>T_MAX) opt.toff = T_MAX-opt.ton;
 	// Рассчитываем pr/dc
-	opt.pr = us2pr(opt.ton+opt.toff);
-	opt.dc = us2pr(opt.ton);
-	pwm_set(opt.pr, opt.dc);
+	set_pwm(
+		us2pr(opt.ton+opt.toff),
+		us2pr(opt.ton)
+	);
 	// Обновляем экран
 	update_ton();
 	update_toff();
@@ -45,41 +46,31 @@ inline void enc2_time(int8_t inc)
 inline void enc2_freq(int8_t inc)
 {
 	// Расчитываем новое значение скважности
-	uint8_t  duty = (U32(100)*(opt.dc+1))/opt.pr;
 	uint16_t step = DUTY_STEP[opt.duty_step];
-	uint16_t dc;
-	if (!duty) duty ++;
 	// Увеличение частоты
 	if (inc>0){
 		// Превышена макс. частота
-		if (duty>=DUTY_MAX) return;
+		if (opt.duty>=DUTY_MAX) return;
 		// Изменяем частоту
 		step *= inc;
-		uint16_t left = DUTY_MAX-duty;
+		uint16_t left = DUTY_MAX-opt.duty;
 		if (step>left) step = left;
-		duty += step;
+		opt.duty += step;
 	}
 	// Уменьшение частоты
 	else{
 		// Меньше мин. частоты
-		if (duty<DUTY_MIN) return;
+		if (opt.duty<DUTY_MIN) return;
 		// Изменяем частоту
 		step *= -inc;
-		uint16_t left = duty-DUTY_MIN;
+		uint16_t left = opt.duty-DUTY_MIN;
 		if (step>left) step = left;
-		duty -= step;
+		opt.duty -= step;
 	}
 	// Расчитываем dc
-	uint16_t dc = (U32(duty)*opt.pr)/100;
-	if (dc==opt.dc){
-		if (inc>0) dc ++;
-		else dc --;
-	}
-	opt.dc = dc;
-	if (opt.dc==opt.pr) opt.dc --;
-	if (!opt.dc) opt.dc ++;
+	uint16_t dc = (U32(opt.duty)*opt.pr)/100;
 	// Устанавливаем параметры ШИМ
-	pwm_set(opt.pr, opt.dc);
+	set_pwm(opt.pr, dc);
 	// Обновляем экран
 	update_freq();
 	update_duty();

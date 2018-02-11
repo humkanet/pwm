@@ -18,6 +18,10 @@ void btn5_event(uint8_t event)
 		opt.ton  = pr2us(opt.dc);
 		opt.toff = pr2us(opt.pr-opt.dc);
 	}
+	// Пересчитываем скважность
+	else if (opt.pwm_mode==CTRL_MODE_FREQ){
+		opt.duty = (100UL*opt.dc)/opt.pr;
+	}
 	// Обновляем экран
 	update_ctrl_mode();
 }

@@ -5,13 +5,11 @@ NAME     = pwm
 MCU      = 16f1765
 
 FOSC     = 32000000UL
-LFINTOSC = 31000UL
-HFINTOSC = 16000000UL
 
 OBJ_DIR  = ./obj
 
-CFLAGS=--chip=$(MCU) -D_XTAL_FREQ=$(FOSC) -D_LFINTOSC_FREQ=$(LFINTOSC) -D_HFINTOSC_FREQ=$(HFINTOSC) \
-	-Q --mode=pro --debugger=none --opt=asm,space --dep=none --objdir=$(OBJ_DIR)
+CFLAGS=--chip=$(MCU) -D_XTAL_FREQ=$(FOSC) -Q --mode=pro --debugger=none \
+	--opt=asm,space --dep=none --objdir=$(OBJ_DIR)
 
 all: $(OBJ_DIR) $(NAME).cof
 

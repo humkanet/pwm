@@ -83,6 +83,7 @@ void     lcd_command(uint8_t cmd);
 void     lcd_goto(uint8_t x, uint8_t y);
 void     lcd_puts(char *str);
 void     lcd_led(uint8_t on);
+void     lcd_clear(char val);
 
 
 #endif

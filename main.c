@@ -142,16 +142,31 @@ void update_ton()
 */
 void update_freq()
 {
-	char str[8];
-	itoa_pad(str, pr2freq(opt.pr), 7, ITOA_TERMINATE);
+	char buf[8];
+	uint32_t freq = pr2freq(opt.pr);
+	if (freq>999999) freq = 999999;
+	// <10kHz
+	if (freq<10000){
+		itoa_pad(buf, freq, 7, ITOA_TERMINATE);
+	}
+	// >=10kHz
+	else{
+		freq /= 100;
+		itoa_pad(buf, freq, 5, 0);
+		buf[7] = 0x00;
+		buf[6] = 'k';
+		buf[5] = buf[4];
+		buf[4] = '.';
+	}
+	// Выводим данные
 	lcd_goto(1, 1);
-	lcd_puts(str);
+	lcd_puts(buf);
 }
 void update_duty()
 {
 	char str[3];
-	uint8_t duty = (U32(100)*opt.dc)/opt.pr;
-	itoa_pad(str, duty ? duty : 1,  2, ITOA_TERMINATE);
+	uint8_t duty = (100UL*opt.dc)/opt.pr;
+	itoa_pad(str, duty,  2, ITOA_TERMINATE);
 	lcd_goto(13, 1);
 	lcd_puts(str);
 }
@@ -160,8 +175,8 @@ void update_duty()
 inline void setup()
 {
 	// Разрешаем pull-up
-	WPUA = 0x00;
-	WPUC = 0x00;
+	WPUA   = 0x00;
+	WPUC   = 0x00;
 	nWPUEN = 0;
 	// Инициализируем переферию
 	ui_init();
@@ -172,19 +187,20 @@ inline void setup()
 	lcd_init(LCD_DISP_ON);
 	lcd_led(1);
 	// Настройки по-умолчанию
-	opt.ctrl_mode = CTRL_MODE_TIME;
+	opt.ctrl_mode = CTRL_MODE_FREQ;
 	opt.pwm_mode  = 0;
 	opt.polarity  = 0;
 	opt.ton_step  = 0;
 	opt.toff_step = 0;
-	opt.freq_step = 0;
+	opt.freq_step = 3;
 	opt.duty_step = 0;
-	opt.dtr       = 0;
-	opt.dtf       = 0;
+	opt.dtr       = 63;
+	opt.dtf       = 63;
 	opt.ton       = 1;
 	opt.toff      = 99;
-	opt.pr        = us2pr(opt.ton+opt.toff);
-	opt.dc        = us2pr(opt.ton);
+	opt.pr        = FREQ2PR(10000);
+	opt.duty      = DUTY_MIN;
+	opt.dc        = (FREQ2PR(10000)*DUTY_MIN)/100;
 	// Разрешаем прерывания IOC
 	IOCIE = 1;
 }
@@ -214,11 +230,13 @@ void main(void)
 	ei();
 
 	// Отображаем напряжение аккумулятора
+	lcd_clear(' ');
 	vbat();
-	__delay_ms(2000);
+	__delay_ms(1000);
+	lcd_clear(' ');
 
 	// Настраиваем и запускаем ШИМ
-	pwm_set(opt.pr, opt.dc);
+	set_pwm(opt.pr, opt.dc);
 	pwm_set_mode(opt.pwm_mode);
 	pwm_set_dt(opt.dtr, opt.dtf);
 	pwm_set_polarity(opt.polarity);
